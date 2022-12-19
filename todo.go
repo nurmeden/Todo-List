@@ -18,3 +18,9 @@ type TodoItem struct {
 	Description string `json:"description"`
 	Done        bool   `json:"done"`
 }
+
+type ListItem struct {
+	Id     int
+	ListId int
+	ItemId int
+}
