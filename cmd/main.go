@@ -1,4 +1,4 @@
-package cmd
+package main
 
 import (
 	"log"
@@ -7,8 +7,9 @@ import (
 )
 
 func main() {
-	srv := new(todo.Server)
-	if err := srv.Run("8008", handler.Create_Page); err != nil {
+	handlers := new(handler.Handler)
+	srv := new(todo.Server) // initialize
+	if err := srv.Run("8008", handlers.InitRoutes()); err != nil {
 		log.Fatalf("error occured while running http server: %s", err.Error())
 	}
 }
