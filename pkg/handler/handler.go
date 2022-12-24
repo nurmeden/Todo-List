@@ -3,11 +3,18 @@ package handler
 import (
 	"html/template"
 	"net/http"
+	"todo/pkg/service"
 
 	"github.com/gin-gonic/gin"
 )
 
-type Handler struct{}
+type Handler struct {
+	services *service.Service
+}
+
+func NewHandler(services *service.Service) *Handler { // конструктор
+	return &Handler{services: services}
+}
 
 func (h *Handler) InitRoutes() *gin.Engine { // endpoint
 	router := gin.New() // initialize router
