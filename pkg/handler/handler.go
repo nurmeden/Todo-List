@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"html/template"
-	"net/http"
 	"todo/pkg/service"
 
 	"github.com/gin-gonic/gin"
@@ -21,38 +19,29 @@ func (h *Handler) InitRoutes() *gin.Engine { // endpoint
 
 	auth := router.Group("/auth")
 	{
-		auth.POST("/sign-up")
-		auth.POST("/sign-in")
+		auth.POST("/sign-up", h.SignUp)
+		auth.POST("/sign-in", h.SignIn)
 	}
 	api := router.Group("/api")
 	{
 		lists := api.Group("/lists")
 		{
-			lists.POST("/")
-			lists.GET("/")
-			lists.GET("/:id")
-			lists.PUT("/:id")
-			lists.DELETE("/:id")
+			lists.POST("/", h.CreateList)
+			lists.GET("/", h.GetAllLists)
+			lists.GET("/:id", h.GetListById)
+			lists.PUT("/:id", h.UpdateList)
+			lists.DELETE("/:id", h.DeleteList)
 
 			items := lists.Group(":id/items")
 			{
-				items.POST("/")
-				items.GET("/")
-				items.GET("/:item_id")
-				items.GET("/:item_id")
-				items.DELETE("/:item_id")
+				items.POST("/", h.CreateItem)
+				items.GET("/", h.GetAllItems)
+				items.GET("/:item_id", h.GetItemById)
+				items.PUT("/:item_id", h.UpdateItem)
+				items.DELETE("/:item_id", h.DeleteItem)
 			}
 		}
 	}
 
 	return router
-}
-
-func Create_Page(w http.ResponseWriter, r *http.Request) {
-	tmpl, _ := template.ParseFiles("webpage.html")
-	err := tmpl.Execute(w, nil)
-	if err != nil {
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		return
-	}
 }
